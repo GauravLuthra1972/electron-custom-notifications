@@ -4144,7 +4144,6 @@
       const ipc = require("electron").ipcRenderer;
 
       ipc.on("notification-add", (e, options) => {
-        console.log("here", options);
         const domParser = new DOMParser();
         const parsedElement = domParser.parseFromString(
           options.content,
@@ -4173,12 +4172,12 @@
             });
           }
           if (options.showDelete) {
-            deleteIcon.addEventListener("mouseenter", () => {
-              ipc.send("make-clickable");
-            });
-            deleteIcon.addEventListener("mouseleave", () => {
-              ipc.send("make-unclickable");
-            });
+            // deleteIcon.addEventListener("mouseenter", () => {
+            //   ipc.send("make-clickable");
+            // });
+            // deleteIcon.addEventListener("mouseleave", () => {
+            //   ipc.send("make-unclickable");
+            // });
             deleteIcon.addEventListener("click", () => {
               ipc.send(
                 "delete-clicked",

@@ -10,10 +10,10 @@
   "author": "Sunil Kumar",
   "license": "ISC",
   "devDependencies": {
-    "@types/node": "^20.14.11",
+    "@types/node": "^20.17.47",
     "@types/uuid": "^10.0.0",
-    "electron": "^31.2.1",
-    "typescript": "^5.5.3",
+    "electron": "^31.7.7",
+    "typescript": "^5.8.3",
     "uuidv4": "^6.2.13"
   }
 }
