@@ -85,7 +85,10 @@ class NotificationContainer {
     this.window = new BrowserWindow(options);
     // const distPath = path.join(__dirname, 'dist');
     this.window.setVisibleOnAllWorkspaces(true);
-    this.window.loadURL(path.join("file://", __dirname, "/container.html"));
+
+    //  this.window.loadFile(path.join(__dirname, "container.html"));
+    this.window.loadFile(path.join(__dirname, "container.html"));
+
     //this.window.loadFile("./container.html");
     this.window.setIgnoreMouseEvents(true, { forward: true });
     this.window.showInactive();
