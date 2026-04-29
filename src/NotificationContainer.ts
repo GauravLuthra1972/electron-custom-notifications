@@ -79,7 +79,7 @@ class NotificationContainer {
     options.webPreferences = {
       nodeIntegration: true,
       contextIsolation: false,
-    }; // Since we're not displaying untrusted content 
+    }; // Since we're not displaying untrusted content
     // (all links are opened in a real browser window), we can enable this.
 
     this.window = new BrowserWindow(options);
@@ -92,41 +92,57 @@ class NotificationContainer {
     //this.window.loadFile("./container.html");
     this.window.setIgnoreMouseEvents(true, { forward: true });
     this.window.showInactive();
-    if(devTools) {  
-      this.window.webContents.openDevTools({ mode: 'detach' });
+    if (devTools) {
+      this.window.webContents.openDevTools({ mode: "detach" });
     }
 
-    ipcMain.on("notification-clicked", (e: any, id: string) => {
+    // ipcMain.on("notification-clicked", (e: any, id: string) => {
+    //   const notification = this.notifications.find(
+    //     notification => notification.id == id
+    //   );
+
+    //   if (notification) {
+    //     notification.emit("click");
+    //   }
+    // });
+
+    ipcMain.on("notification-clicked", (e: any, data: any) => {
+      let id = data;
+      let action = null;
+
+      if (typeof data === "object") {
+        id = data.id;
+        action = data.action;
+      }
+
       const notification = this.notifications.find(
-        notification => notification.id == id
+        (notification) => notification.id == id,
       );
 
       if (notification) {
-        notification.emit("click");
+        notification.emit("click", action);
       }
     });
 
     ipcMain.on("delete-clicked", (e: any, id: string) => {
       const notification = this.notifications.find(
-        notification => notification.id == id
+        (notification) => notification.id == id,
       );
 
       if (notification) {
         notification.emit("deleted");
-
       }
     });
 
     ipcMain.on("notification-closed", (e: any, id: string) => {
       const notification = this.notifications.find(
-        notification => notification.id == id
+        (notification) => notification.id == id,
       );
 
       if (notification) {
-        this.removeNotification(notification)
+        this.removeNotification(notification);
       }
     });
-
 
     ipcMain.on("make-clickable", (e: any) => {
       this.window && this.window.setIgnoreMouseEvents(false);
@@ -142,7 +158,7 @@ class NotificationContainer {
         this.window &&
           this.window.webContents.send(
             "custom-styles",
-            NotificationContainer.CUSTOM_STYLES
+            NotificationContainer.CUSTOM_STYLES,
           );
       }
       this.notifications.forEach(this.displayNotification);
@@ -179,7 +195,7 @@ class NotificationContainer {
     this.window &&
       this.window.webContents.send(
         "notification-add",
-        notification.getSource()
+        notification.getSource(),
       );
     notification.emit("display");
     if (notification.options.timeout) {

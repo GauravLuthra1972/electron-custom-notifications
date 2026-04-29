@@ -101,7 +101,7 @@ var NotificationContainer = /** @class */ (function () {
         options.webPreferences = {
             nodeIntegration: true,
             contextIsolation: false,
-        }; // Since we're not displaying untrusted content 
+        }; // Since we're not displaying untrusted content
         // (all links are opened in a real browser window), we can enable this.
         this.window = new electron_1.BrowserWindow(options);
         // const distPath = path.join(__dirname, 'dist');
@@ -112,12 +112,26 @@ var NotificationContainer = /** @class */ (function () {
         this.window.setIgnoreMouseEvents(true, { forward: true });
         this.window.showInactive();
         if (devTools) {
-            this.window.webContents.openDevTools({ mode: 'detach' });
+            this.window.webContents.openDevTools({ mode: "detach" });
         }
-        electron_1.ipcMain.on("notification-clicked", function (e, id) {
+        // ipcMain.on("notification-clicked", (e: any, id: string) => {
+        //   const notification = this.notifications.find(
+        //     notification => notification.id == id
+        //   );
+        //   if (notification) {
+        //     notification.emit("click");
+        //   }
+        // });
+        electron_1.ipcMain.on("notification-clicked", function (e, data) {
+            var id = data;
+            var action = null;
+            if (typeof data === "object") {
+                id = data.id;
+                action = data.action;
+            }
             var notification = _this.notifications.find(function (notification) { return notification.id == id; });
             if (notification) {
-                notification.emit("click");
+                notification.emit("click", action);
             }
         });
         electron_1.ipcMain.on("delete-clicked", function (e, id) {

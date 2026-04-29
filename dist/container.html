@@ -4789,11 +4789,11 @@
         }
         if (options.showDelete) {
           deleteIcon.addEventListener("mouseenter", () => {
-          ipc.send("make-clickable");
-           });
-           deleteIcon.addEventListener("mouseleave", () => {
+            ipc.send("make-clickable");
+          });
+          deleteIcon.addEventListener("mouseleave", () => {
             ipc.send("make-unclickable");
-           });
+          });
           deleteIcon.addEventListener("click", () => {
             ipc.send(
               "delete-clicked",
@@ -4807,11 +4807,22 @@
           parsedElement.addEventListener("mouseleave", () => {
             ipc.send("make-unclickable");
           });
-          parsedElement.addEventListener("click", () => {
-            ipc.send(
-              "notification-clicked",
-              parsedElement.getAttribute("data-notification-id")
-            );
+          // parsedElement.addEventListener("click", () => {
+          //   ipc.send(
+          //     "notification-clicked",
+          //     parsedElement.getAttribute("data-notification-id")
+          //   );
+          // });
+
+          parsedElement.addEventListener("click", (e) => {
+            const id = parsedElement.getAttribute("data-notification-id");
+
+            const action = e.target && e.target.id ? e.target.id : null;
+
+            ipc.send("notification-clicked", {
+              id,
+              action,
+            });
           });
         }
         container.insertBefore(parsedElement, container.firstChild);
@@ -4856,7 +4867,7 @@
     <div class="clear"></div>
     <div id="notification-container"></div>
     <div class="action-bar" id="actions">
-    <span class="close-icon" id="closeIcon">&#215;</span>
+      <span class="close-icon" id="closeIcon">&#215;</span>
       <div class="barcontainer">
         <div class="bar"></div>
       </div>
