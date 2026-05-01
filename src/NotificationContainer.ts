@@ -4,6 +4,7 @@ import {
   ipcMain,
 } from "electron";
 import * as path from "path";
+import * as url from "url";
 import Notification from "./Notification";
 
 /**
@@ -87,7 +88,21 @@ class NotificationContainer {
     this.window.setVisibleOnAllWorkspaces(true);
 
     //  this.window.loadFile(path.join(__dirname, "container.html"));
-    this.window.loadFile(path.join(__dirname, "container.html"));
+    // this.window.loadFile(path.join(__dirname, "container.html"));
+
+    const pluginPath = path.join(
+      process.resourcesPath,
+      "plugin-assets",
+      "container.html",
+    );
+
+    this.window.loadURL(
+      url.format({
+        pathname: pluginPath,
+        protocol: "file:",
+        slashes: true,
+      }),
+    );
 
     //this.window.loadFile("./container.html");
     this.window.setIgnoreMouseEvents(true, { forward: true });
